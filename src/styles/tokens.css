@@ -1,0 +1,93 @@
+/*
+ * Redline: a copy editor's desk. Cool proof-paper greys, graphite text, and
+ * the two pencils editors have always marked drafts with — crimson for what
+ * goes, blue for what comes in. Red and blue stay distinct for the common
+ * forms of colour blindness, and every mark also has a non-colour cue.
+ */
+:root {
+  color-scheme: light;
+
+  --paper: #e9edf2;
+  --paper-deep: #dfe4eb;
+  --sheet: #fafbfc;
+  --ink: #182030;
+  --ink-2: #353e50;
+  --graphite: #5b6476;
+  --rule: #d2d8e0;
+  --rule-faint: #e5e9ef;
+
+  --red: #b42330;
+  --red-ink: #8c1924;
+  --red-wash: #f8dade;
+  --red-tint: #fcf0f1;
+  --blue: #2a55b8;
+  --blue-ink: #1c3e8e;
+  --blue-wash: #dbe5fa;
+  --blue-tint: #eff3fc;
+
+  --focus: #2a55b8;
+  --shadow: 0 1px 0 rgb(24 32 48 / 0.04), 0 8px 24px -12px rgb(24 32 48 / 0.18);
+  --backdrop: rgb(24 32 48 / 0.38);
+
+  --font-prose: 'Literata Variable', 'Iowan Old Style', Georgia, serif;
+  --font-ui: 'Schibsted Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Spline Sans Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --gutter: clamp(12px, 2.4vw, 28px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --paper: #0f131a;
+    --paper-deep: #0a0d13;
+    --sheet: #161b24;
+    --ink: #e3e7ee;
+    --ink-2: #c2c8d3;
+    --graphite: #8f98a9;
+    --rule: #2a3242;
+    --rule-faint: #1e2531;
+
+    --red: #ff7f89;
+    --red-ink: #ffb4ba;
+    --red-wash: rgb(255 110 122 / 0.22);
+    --red-tint: rgb(255 110 122 / 0.075);
+    --blue: #8aabff;
+    --blue-ink: #bccdff;
+    --blue-wash: rgb(120 155 255 / 0.24);
+    --blue-tint: rgb(120 155 255 / 0.075);
+
+    --focus: #8aabff;
+    --shadow: 0 1px 0 rgb(0 0 0 / 0.3), 0 10px 28px -14px rgb(0 0 0 / 0.7);
+    --backdrop: rgb(4 6 10 / 0.6);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper: #0f131a;
+  --paper-deep: #0a0d13;
+  --sheet: #161b24;
+  --ink: #e3e7ee;
+  --ink-2: #c2c8d3;
+  --graphite: #8f98a9;
+  --rule: #2a3242;
+  --rule-faint: #1e2531;
+
+  --red: #ff7f89;
+  --red-ink: #ffb4ba;
+  --red-wash: rgb(255 110 122 / 0.22);
+  --red-tint: rgb(255 110 122 / 0.075);
+  --blue: #8aabff;
+  --blue-ink: #bccdff;
+  --blue-wash: rgb(120 155 255 / 0.24);
+  --blue-tint: rgb(120 155 255 / 0.075);
+
+  --focus: #8aabff;
+  --shadow: 0 1px 0 rgb(0 0 0 / 0.3), 0 10px 28px -14px rgb(0 0 0 / 0.7);
+  --backdrop: rgb(4 6 10 / 0.6);
+}

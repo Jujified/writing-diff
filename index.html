@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      Privacy is enforced by the browser, not just promised: nothing may be
+      fetched, posted, framed, or loaded from anywhere but this site, and
+      connect-src 'none' blocks fetch/XHR/WebSocket/beacons outright.
+      blob: workers are allowed only because pdf.js may spawn one.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; child-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Compare two drafts of an essay paragraph by paragraph. Runs entirely in your browser; your text never leaves the page." />
+    <title>Redline — compare two drafts, privately</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script src="/theme-init.js"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#scroller">Skip to the comparison</a>
+    <header class="masthead">
+      <div class="brand">
+        <p class="wordmark"><span class="wm-red">Red</span><span class="wm-line">line</span></p>
+        <p class="tagline">Two drafts, compared on this device. Nothing is uploaded or saved.</p>
+      </div>
+      <div class="masthead-tools" id="masthead-tools"></div>
+    </header>
+    <main class="app" id="app">
+      <section class="drafts" id="drafts" aria-label="Drafts"></section>
+      <section class="results" id="results" aria-labelledby="results-title">
+        <h2 class="visually-hidden" id="results-title">Comparison</h2>
+        <div class="summary" id="summary"></div>
+        <div class="viewer">
+          <div class="scroller" id="scroller" tabindex="0" aria-label="Comparison"></div>
+          <div class="rail is-empty" id="rail" aria-hidden="true"><span class="rail-thumb" id="rail-thumb" hidden></span></div>
+        </div>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
