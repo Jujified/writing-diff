@@ -35,12 +35,39 @@ export class DiffView {
   ) {
     scroller.addEventListener('scroll', () => this.updateThumb(), { passive: true });
     new ResizeObserver(() => this.scheduleRail()).observe(scroller);
-    rail.addEventListener('click', (e) => {
-      const tick = (e.target as HTMLElement).closest<HTMLElement>('.rail-tick');
-      if (tick) return this.goTo(Number(tick.dataset.change));
+    // The rail doubles as the scrollbar: drag the thumb, press elsewhere to
+    // jump there (and keep dragging), or click a change mark to go to it.
+    rail.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0 || thumb.hidden) {
+        const tick = (e.target as HTMLElement).closest<HTMLElement>('.rail-tick');
+        if (tick && e.button === 0) this.goTo(Number(tick.dataset.change));
+        return;
+      }
       const box = rail.getBoundingClientRect();
-      const ratio = (e.clientY - box.top) / box.height;
-      scroller.scrollTo({ top: ratio * scroller.scrollHeight - scroller.clientHeight / 2, behavior: this.scrollBehavior() });
+      const thumbBox = thumb.getBoundingClientRect();
+      const onThumb = e.clientY >= thumbBox.top && e.clientY <= thumbBox.bottom;
+      if (!onThumb) {
+        const tick = (e.target as HTMLElement).closest<HTMLElement>('.rail-tick');
+        if (tick) return this.goTo(Number(tick.dataset.change));
+      }
+      e.preventDefault();
+      const grab = onThumb ? e.clientY - thumbBox.top : thumbBox.height / 2;
+      const scrollToPointer = (clientY: number) => {
+        scroller.scrollTop = ((clientY - grab - box.top) / box.height) * scroller.scrollHeight;
+      };
+      if (!onThumb) scrollToPointer(e.clientY);
+      rail.setPointerCapture(e.pointerId);
+      rail.classList.add('is-dragging');
+      const move = (ev: PointerEvent) => scrollToPointer(ev.clientY);
+      const end = () => {
+        rail.classList.remove('is-dragging');
+        rail.removeEventListener('pointermove', move);
+        rail.removeEventListener('pointerup', end);
+        rail.removeEventListener('pointercancel', end);
+      };
+      rail.addEventListener('pointermove', move);
+      rail.addEventListener('pointerup', end);
+      rail.addEventListener('pointercancel', end);
     });
   }
 
@@ -316,6 +343,7 @@ export class DiffView {
     this.railTicks = [];
     this.rail.querySelectorAll('.rail-tick').forEach((t) => t.remove());
     this.rail.classList.add('is-empty');
+    this.updateThumb();
   }
 
   private scheduleRail(): void {

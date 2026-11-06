@@ -659,6 +659,12 @@ button:disabled {
   overflow: auto;
   overscroll-behavior: contain;
   scroll-padding-top: 40px;
+  /* The change rail beside it is the scrollbar. */
+  scrollbar-width: none;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
 }
 
 .scroller:focus-visible {
@@ -938,10 +944,8 @@ ins.ws {
   border-left: 1px solid var(--rule-faint);
   background: var(--paper);
   cursor: pointer;
-}
-
-.rail.is-empty {
-  cursor: default;
+  touch-action: none;
+  user-select: none;
 }
 
 .rail-tick {
@@ -969,11 +973,65 @@ ins.ws {
 
 .rail-thumb {
   position: absolute;
-  left: 0;
-  right: 0;
-  border-block: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
-  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  z-index: 1;
+  left: 1px;
+  right: 1px;
+  min-height: 24px;
+  border: 1px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
   pointer-events: none;
+  transition: background 120ms ease;
+}
+
+.rail:hover .rail-thumb,
+.rail.is-dragging .rail-thumb {
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+/* Draft panes, previews, and the settings drawer get a matching scrollbar:
+   a quiet track with a rounded graphite thumb instead of the system one. */
+.pane-text,
+.pane-preview,
+.drawer {
+  scrollbar-gutter: stable;
+}
+
+.pane-text::-webkit-scrollbar,
+.pane-preview::-webkit-scrollbar,
+.drawer::-webkit-scrollbar {
+  width: 14px;
+}
+
+.pane-text::-webkit-scrollbar-track,
+.pane-preview::-webkit-scrollbar-track,
+.drawer::-webkit-scrollbar-track {
+  border-left: 1px solid var(--rule-faint);
+  background: var(--paper);
+}
+
+.pane-text::-webkit-scrollbar-thumb,
+.pane-preview::-webkit-scrollbar-thumb,
+.drawer::-webkit-scrollbar-thumb {
+  min-height: 24px;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent) padding-box;
+}
+
+.pane-text::-webkit-scrollbar-thumb:hover,
+.pane-preview::-webkit-scrollbar-thumb:hover,
+.drawer::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--ink) 34%, transparent) padding-box;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .pane-text,
+  .pane-preview,
+  .drawer {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--ink) 25%, transparent) var(--paper);
+  }
 }
 
 /* ---------- Empty, identical, error states -------------------------------- */
