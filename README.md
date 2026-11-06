@@ -180,6 +180,16 @@ a `<user>.github.io` repository, set a repository variable `VITE_BASE` to `/`
 (Settings → Secrets and variables → Actions → Variables), or build with
 `VITE_BASE=/ npm run build`.
 
+### If a deploy fails
+
+- **Deploy step times out** ("Timeout reached" while the status shows
+  `deployment_queued` or `updating_pages`): GitHub Pages was slow to publish.
+  Nothing is wrong with the build. Re-run the workflow later.
+- **"Deployment cancelled" straight away on a re-run**: GitHub names each
+  Pages deployment after its commit, so once a commit's deployment has been
+  cancelled, re-runs of that commit are cancelled too. Push a new commit (or
+  run the workflow after the next change) to deploy again.
+
 ## Project layout
 
 ```
