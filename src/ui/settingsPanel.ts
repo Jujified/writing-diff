@@ -134,6 +134,7 @@ export const SHORTCUTS: Array<[string[], string]> = [
   [['u'], 'Switch unified / side by side'],
   [['g'], 'Cycle paragraph → word → character'],
   [['s'], 'Swap Original and Revised'],
+  [['f'], 'Full-screen comparison'],
   [[','], 'Open settings'],
   [['?'], 'Show these shortcuts'],
   [['Esc'], 'Close a panel'],

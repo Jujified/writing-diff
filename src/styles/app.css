@@ -1347,6 +1347,48 @@ kbd {
   }
 }
 
+/* ---------- Full-screen comparison --------------------------------------- */
+
+body.diff-expanded {
+  overflow: hidden;
+}
+
+body.diff-expanded .results {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  padding-top: 10px;
+  background: var(--paper);
+  animation: expand-in 160ms ease-out;
+}
+
+body.diff-expanded .viewer {
+  height: auto;
+}
+
+body.diff-expanded .drafts-toggle {
+  display: none;
+}
+
+/* A centred reading column, like an open document. */
+body.diff-expanded .diff--unified {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.expand-btn {
+  margin-left: 4px;
+}
+
+@keyframes expand-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
 /* ---------- Small screens ------------------------------------------------- */
 
 /* Below desktop width the file name and counts get their own line. */

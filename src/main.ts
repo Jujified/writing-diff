@@ -90,12 +90,13 @@ const layoutControl = segmented<Layout>('Layout', [['split', 'Side by side'], ['
 const granControl = segmented('Compare by', GRANULARITIES.map((g) => [g, GRANULARITY_LABEL[g]] as [typeof g, string]), (granularity) =>
   store.set({ granularity }),
 );
+const expandButton = h('button', { type: 'button', class: 'icon-btn expand-btn', onclick: () => setExpanded(!expanded) });
 const draftsToggle = h('button', { type: 'button', class: 'btn btn--quiet drafts-toggle', 'aria-controls': 'drafts', onclick: () => store.set({ draftsHidden: !store.get().draftsHidden }) });
 
 $('summary').append(
   h('div', { class: 'summary-stats' }, statAdded, statRemoved, statParas, busy),
   h('div', { class: 'summary-view' }, layoutControl.el, granControl.el),
-  h('div', { class: 'summary-nav' }, prevButton, navLabel, nextButton, draftsToggle),
+  h('div', { class: 'summary-nav' }, prevButton, navLabel, nextButton, draftsToggle, expandButton),
 );
 
 function showStats(stats: DiffStats | null): void {
@@ -187,6 +188,21 @@ function swap(): void {
   announce('Swapped Original and Revised');
 }
 
+/** Full-screen comparison: the results take over the window, like an open artifact. */
+let expanded = false;
+
+function setExpanded(next: boolean): void {
+  expanded = next;
+  document.body.classList.toggle('diff-expanded', next);
+  expandButton.replaceChildren(icon(next ? 'collapse' : 'expand'));
+  const label = next ? 'Exit full screen (f or Esc)' : 'Full screen (f)';
+  expandButton.setAttribute('aria-label', next ? 'Exit full screen' : 'Show comparison full screen');
+  expandButton.setAttribute('aria-pressed', String(next));
+  expandButton.title = label;
+  if (next) $('scroller').focus({ preventScroll: true });
+}
+setExpanded(false);
+
 function cycleTheme(): void {
   const theme = nextTheme(store.get().theme);
   store.set({ theme });
@@ -218,6 +234,10 @@ bindShortcuts({
   s: () => swap(),
   ',': () => settingsPanel.toggleOpen(),
   '?': () => toggleHelp(),
+  f: () => setExpanded(!expanded),
+  Escape: () => {
+    if (expanded) setExpanded(false);
+  },
 });
 
 reflectSettings(store.get());

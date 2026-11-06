@@ -81,6 +81,7 @@ type.
 | `u` | Toggle unified / side by side |
 | `g` | Cycle paragraph → word → character |
 | `s` | Swap Original and Revised |
+| `f` | Show the comparison full screen (`Esc` to exit) |
 | `,` | Open settings |
 | `?` | Show shortcuts |
 | `Esc` | Close a panel, or leave a text area |
