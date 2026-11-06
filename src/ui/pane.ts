@@ -181,21 +181,18 @@ export class Pane {
   }
 
   setMode(mode: Mode): void {
-    if (mode === 'preview' && !this.state.preview) return;
     this.state.mode = mode;
     this.applyMode();
   }
 
   private applyMode(): void {
     const { mode, preview } = this.state;
-    const showPreview = mode === 'preview' && preview !== null;
+    const showPreview = mode === 'preview';
     this.textarea.hidden = showPreview;
     this.previewEl.hidden = !showPreview;
-    this.staleNote.hidden = !(showPreview && this.state.edited);
+    this.staleNote.hidden = !(showPreview && preview !== null && this.state.edited);
     this.modeButtons.text.setAttribute('aria-pressed', String(!showPreview));
     this.modeButtons.preview.setAttribute('aria-pressed', String(showPreview));
-    this.modeButtons.preview.disabled = preview === null;
-    this.modeButtons.preview.title = preview === null ? 'Load a file to see its formatted preview' : '';
     if (showPreview) this.renderPreview();
   }
 
@@ -203,7 +200,19 @@ export class Pane {
 
   private renderPreview(): void {
     const preview = this.state.preview;
-    if (!preview || this.renderedPreview === preview) return;
+    if (!preview) {
+      // Typed or pasted text: show it as reading paragraphs.
+      this.renderedPreview = null;
+      this.previewEl.classList.remove('pane-preview--pdf');
+      const paragraphs = splitParagraphs(normalizeText(this.state.text, { normalizeQuotes: false }));
+      this.previewEl.replaceChildren(
+        ...(paragraphs.length
+          ? paragraphs.map((p) => h('p', null, p))
+          : [h('p', { class: 'pane-preview-empty' }, 'Nothing to preview yet. Switch to Text to paste or type a draft.')]),
+      );
+      return;
+    }
+    if (this.renderedPreview === preview) return;
     this.renderedPreview = preview;
     this.previewEl.classList.toggle('pane-preview--pdf', preview.type === 'pdf');
     if (preview.type === 'html') {

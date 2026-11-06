@@ -261,8 +261,8 @@ button:disabled {
 
 .pane {
   position: relative;
-  display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   min-height: 0;
   border: 1px solid var(--rule);
@@ -342,6 +342,7 @@ button:disabled {
 
 .pane-body {
   position: relative;
+  flex: 1;
   min-height: 0;
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
@@ -396,6 +397,11 @@ button:disabled {
   flex: none;
   background: #fff;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.18);
+}
+
+.pane-preview-empty {
+  color: var(--graphite);
+  font-style: italic;
 }
 
 .pane-note {
